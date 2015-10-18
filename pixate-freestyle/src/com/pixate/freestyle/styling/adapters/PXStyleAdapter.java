@@ -497,6 +497,9 @@ public abstract class PXStyleAdapter {
         registerStyleAdapter(PXVirtualActionBarLogo.class.getName(), PXVirtualActionBarLogoAdapter.getInstance());
         // @formatter:on
 
+        // Custom adapters
+        SPStyleAdapter.attachCustomStyleAdapters();
+
         // This is hideous, but DOM implementations are put on
         // devices/emulators.
         // At compile time, the DOM is only a set of interfaces, and we need
