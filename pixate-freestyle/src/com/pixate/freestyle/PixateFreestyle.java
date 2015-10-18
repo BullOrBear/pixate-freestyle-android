@@ -124,10 +124,58 @@ public class PixateFreestyle {
     /**
      * Initialize Pixate with the given {@link Context} and CSS file.
      *
+     * @author Martin Sonc <martin@lovesuperpixel.com>
+     *
      * @param context
      * @param cssFileName The CSS file to load styles from
      */
     public static void init(Context context, String cssFileName) {
+        if (mAppContext == null) {
+            mAppContext = context.getApplicationContext();
+            // log a version
+            Log.i(TAG, String.format("Pixate Freestyle version %s (API version %d)", getVersion(),
+                    getApiVersion()));
+        }
+
+        if (cssFileName != currentCSS.getAndSet(cssFileName)) {
+            // try to load the default CSS ones.
+            PXStylesheet stylesheet = PXStylesheet.getExternalStylesheet(
+                    context.getApplicationContext(), cssFileName, PXStyleSheetOrigin.APPLICATION);
+            if (stylesheet != null) {
+                logErrors(stylesheet.getErrors());
+            }
+        }
+
+        // Disabled, because we may not even need a class loader.
+        // CustomClassLoader.useFor(context);
+
+        if (ICS_OR_BETTER && !mAppInited) {
+            initApp(context);
+        }
+
+        if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+            WrappedInflaterFactory.applyTo(activity);
+            // Grab the 'decorView' which contains the ActionBar and the
+            // content.
+            View decorView = activity.getWindow().getDecorView();
+            ViewUtil.prepareViewGroupListeners((ViewGroup) decorView);
+
+            // We have to get to the tabs in case the ActionBar mode has them
+            // enabled.
+            ActionBar actionBar = activity.getActionBar();
+            // Call the style whatever we can using the ActionBar instance
+            // itself (a non-view styling).
+            style(actionBar);
+        }
+    }
+
+    /**
+     * Initialization method that supports loading external stylesheets
+     * @param context
+     * @param cssFileName
+     */
+    public static void initExternal(Context context, String cssFileName) {
         if (mAppContext == null) {
             mAppContext = context.getApplicationContext();
             // log a version
@@ -165,7 +213,6 @@ public class PixateFreestyle {
             // Call the style whatever we can using the ActionBar instance
             // itself (a non-view styling).
             style(actionBar);
-
         }
     }
 

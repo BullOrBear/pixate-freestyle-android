@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
 
@@ -173,6 +174,19 @@ public class PXStyleUtils {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Updates the styles for a given activity
+     *
+     * @author Martin Sonc <martin@lovesuperpixel.com>
+     *
+     * @param activity {@link Activity}
+     */
+    public static void updateStyles(Activity activity) {
+        if(activity != null) {
+            updateStyles(activity.getWindow().getDecorView(), true);
         }
     }
 

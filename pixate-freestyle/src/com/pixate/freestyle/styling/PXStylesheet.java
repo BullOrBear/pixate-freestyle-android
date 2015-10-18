@@ -15,7 +15,10 @@
  ******************************************************************************/
 package com.pixate.freestyle.styling;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +93,31 @@ public class PXStylesheet {
         } catch (IOException e) {
             PXLog.e(TAG, "Error reading stylesheet from " + aFilePath);
         }
+        return null;
+    }
+
+    /**
+     * Loads the stylesheet using an external path
+     *
+     * @author Martin Sonc <martin@lovesuperpixel.com>
+     *
+     * @param context
+     * @param aFilePath
+     * @param origin
+     * @return
+     */
+    public static PXStylesheet getExternalStylesheet(Context context, String aFilePath, PXStyleSheetOrigin origin) {
+        try {
+            File file = new File(aFilePath);
+            InputStream is = new FileInputStream(file);
+
+            String source = IOUtil.read(is);
+
+            return getStyleSheetFromSource(source, origin, aFilePath);
+        } catch (IOException e) {
+            PXLog.e(TAG, "Error reading stylesheet from " + aFilePath);
+        }
+
         return null;
     }
 
