@@ -170,6 +170,9 @@ public class PXStylerContext {
 
     private PXShape shape;
 
+    // For custom values
+    private SPStylerContext spStylerContext = new SPStylerContext();
+
     // For PXLayoutStyler
     private float top;
     private float left;
@@ -287,6 +290,10 @@ public class PXStylerContext {
     // TODO equiv? - (void)applyOuterShadowToLayer:(CALayer *)layer
     public void applyOuterShadow(View view) {
 
+    }
+
+    public SPStylerContext getSPStylerContext() {
+        return spStylerContext;
     }
 
     public Object getPropertyValue(String propertyName) {
